@@ -48,9 +48,9 @@ module Sidekiq::RateLimiter
       options = options.dup
       name = options.delete('name') ||
              options.delete(:name)
-      scope_by_hostname = options.delete(:per_server)
+      name = "#{hostname}:#{name}" if options.delete(:per_server) || options.delete('per_server')
 
-      super(scope_by_hostname ? "#{hostname}:#{name}" : name, redis, options)
+      super(name, redis, options)
     end
 
     private
